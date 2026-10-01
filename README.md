@@ -6,5 +6,5 @@ Users live in an OSC PostgreSQL database; the app verifies bcrypt hashes with bc
 - `GET /` sign-in form
 - `POST /signin` returns SIGN-IN OK or WRONG CREDENTIALS (same message for unknown email and wrong password)
 
-Config comes only from environment variables (OSC parameter store): `DATABASE_URL`, and for the
-one-off import `ADMIN_TOKEN` plus `ADMIN_ENABLED=true`. With `ADMIN_ENABLED` unset there are no admin routes.
+Config comes only from the environment variable `DATABASE_URL` (OSC parameter store, encrypted secret).
+The one-off import and DB probe routes used during setup were removed in a later commit.
