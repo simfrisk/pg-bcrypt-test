@@ -218,6 +218,8 @@ async function handleDbCheck(req, res) {
     host: u.hostname,
     wrongPassword: await attempt("definitely-not-the-password"),
     noPassword: await noPasswordProbe(),
+    appToDbTls: await pool.query("SELECT ssl, version FROM pg_stat_ssl WHERE pid = pg_backend_pid()").then((r) => JSON.stringify(r.rows[0]), (e) => "ERR " + e.code),
+    serverSslSetting: await pool.query("SHOW ssl").then((r) => r.rows[0].ssl, (e) => "ERR " + e.code),
     correctPasswordViaPool: await pool.query("SELECT count(*)::int AS n FROM users").then((r) => `OK, users=${r.rows[0].n}`, (e) => "ERR " + e.code),
   };
   return send(res, 200, JSON.stringify(out), "application/json");
